@@ -1,39 +1,45 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class QuizManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class QuizData
-    {
-        public string question;
-        public string[] options;
-        public int correctAnswerIndex;
-    }
-
-    public QuizData[] quizList;
+    public QuizQuestions quizQuestions;
+    private List<QuizDatabase> shuffledQuizList;
     private int currentQuizIndex = 0;
+
+    private int correctCount = 0; // jumlah benar
+    private int wrongCount = 0;   // jumlah salah
 
     [Header("Main Quiz UI")]
     public GameObject quizPanel;
     public TextMeshProUGUI questionText;
+    public TextMeshProUGUI questionNumberText; // <-- label "Question X"
     public Button[] optionButtons;
 
     [Header("Feedback Panels")]
     public GameObject quizRightPanel;
     public GameObject quizWrongPanel;
 
+    [Header("Result Panel")]
+    public GameObject resultPanel;
+    public TextMeshProUGUI resultText; // untuk menampilkan hasil benar/salah
+
     void Start()
     {
         quizPanel.SetActive(false);
         quizRightPanel.SetActive(false);
         quizWrongPanel.SetActive(false);
+        resultPanel.SetActive(false);
+
+        shuffledQuizList = new List<QuizDatabase>(quizQuestions.quizzes);
+        ShuffleQuiz(shuffledQuizList);
     }
 
     public void ShowQuiz()
     {
-        if (currentQuizIndex < quizList.Length)
+        if (currentQuizIndex < shuffledQuizList.Count)
         {
             quizPanel.SetActive(true);
             quizRightPanel.SetActive(false);
@@ -42,13 +48,17 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No more quizzes available.");
+            ShowResult();
         }
     }
 
     void DisplayQuiz(int index)
     {
-        QuizData quiz = quizList[index];
+        QuizDatabase quiz = shuffledQuizList[index];
+
+        // Ubah label nomor pertanyaan
+        questionNumberText.text = $"Question {index + 1}";
+
         questionText.text = quiz.question;
 
         for (int i = 0; i < optionButtons.Length; i++)
@@ -63,20 +73,22 @@ public class QuizManager : MonoBehaviour
 
     void CheckAnswer(int chosenIndex)
     {
-        bool isCorrect = chosenIndex == quizList[currentQuizIndex].correctAnswerIndex;
+        bool isCorrect = chosenIndex == shuffledQuizList[currentQuizIndex].correctAnswerIndex;
 
         quizPanel.SetActive(false);
 
         if (isCorrect)
         {
+            correctCount++;
             quizRightPanel.SetActive(true);
         }
         else
         {
+            wrongCount++;
             quizWrongPanel.SetActive(true);
         }
 
-        Invoke(nameof(NextStep), 2f); // tunggu 2 detik lalu lanjut
+        Invoke(nameof(NextStep), 2f);
     }
 
     void NextStep()
@@ -86,7 +98,31 @@ public class QuizManager : MonoBehaviour
 
         currentQuizIndex++;
 
-        // Bisa lanjut video berikutnya atau panggil ShowQuiz lagi
-        Debug.Log("Lanjut ke proses berikutnya...");
+        if (currentQuizIndex < shuffledQuizList.Count)
+        {
+            ShowQuiz();
+        }
+        else
+        {
+            ShowResult();
+        }
+    }
+
+    void ShowResult()
+    {
+        resultPanel.SetActive(true);
+        resultText.text = $"Quiz Selesai!\nBenar: {correctCount}\nSalah: {wrongCount}";
+        Debug.Log($"Benar: {correctCount}, Salah: {wrongCount}");
+    }
+
+    void ShuffleQuiz(List<QuizDatabase> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            QuizDatabase temp = list[i];
+            int randomIndex = Random.Range(i, list.Count);
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
     }
 }
