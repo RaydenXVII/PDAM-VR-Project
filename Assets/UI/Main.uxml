@@ -1,4 +1,9 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/mainMenu.uss?fileID=7433441132597879392&amp;guid=167ec7e2e9bc23247ab42ec22ffa6a2d&amp;type=3#mainMenu" />
-    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1;" />
+    <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Materials/UI%20elements/Menu_Game.png?fileID=21300000&amp;guid=d19cc618861361c4f9086d868f1b03e1&amp;type=3#Menu_Game&quot;); flex-direction: column; flex-wrap: nowrap; align-self: auto; align-content: flex-start; align-items: center; justify-content: flex-start;">
+        <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; -unity-text-align: upper-left;" />
+        <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Materials/UI%20elements/Tittle.png?fileID=21300000&amp;guid=4b1e12790eefe6c49a8eac7fc8035a4e&amp;type=3#Tittle&quot;); background-color: rgba(0, 0, 0, 0); width: 257px; height: 104px; margin-top: -24px;" />
+        <ui:Button text="&#10;" name="playButton" style="background-image: url(&quot;project://database/Assets/Materials/UI%20elements/start.png?fileID=21300000&amp;guid=25acf8a502fae5444baed00e03236186&amp;type=3#start&quot;); width: 260px; height: 81px; -unity-font-style: bold-and-italic; -unity-text-align: middle-center; white-space: pre; background-color: rgba(255, 255, 255, 0); margin-bottom: 0;" />
+        <ui:Button text="&#10;" name="quitButton" style="background-image: url(&quot;project://database/Assets/Materials/UI%20elements/quitButton.png?fileID=21300000&amp;guid=4dae66f3de6bb054ea842e9bfa086cd2&amp;type=3#quitButton&quot;); width: 151px; height: 68px; -unity-font-style: bold-and-italic; -unity-text-align: middle-center; white-space: pre; background-color: rgba(255, 255, 255, 0); margin-bottom: 0;" />
+    </ui:VisualElement>
 </ui:UXML>
